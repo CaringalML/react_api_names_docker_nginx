@@ -1,17 +1,27 @@
-# Use an official Node.js runtime as the base image
-FROM node:lts-alpine
+# Stage 1: Build React App with Node.js
+FROM node:14-alpine as build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json (if present) to the working directory
 COPY package*.json ./
 
-# Install dependencies
-# RUN npm install
+# Use npm ci for a more deterministic install
+RUN npm ci
 
-# Copy the rest of the app's code
 COPY . .
 
-# Specify the command to run when the container starts
-CMD ["npm", "start"]
+# Run the build command and name the output directory as 'foodapp'
+RUN npm run build && mv build foodapp
+
+# Stage 2: Use Nginx Alpine image to serve the static files
+FROM nginx:alpine
+
+# Copy the build artifacts from the previous stage
+COPY --from=build /app/foodapp /usr/share/nginx/html
+
+# Expose the port that Nginx will run on (default is 80)
+EXPOSE 80
+
+# The default command to start Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
