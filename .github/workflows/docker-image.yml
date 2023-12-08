@@ -13,14 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      #- name: Login to Docker Hub
+        #run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/react_api_names_test .
+      #- name: Build Docker image
+        #run: docker build -t ${{ secrets.DOCKER_USERNAME }}/react_api_names_test .
 
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/react_api_names_test
+      #- name: Push Docker image
+        #run: docker push ${{ secrets.DOCKER_USERNAME }}/react_api_names_test
 
 
 
